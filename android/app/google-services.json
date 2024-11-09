@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "189847202772",
+    "project_id": "bmw-ecom",
+    "storage_bucket": "bmw-ecom.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:189847202772:android:5d6353d45e488bd3980441",
+        "android_client_info": {
+          "package_name": "com.bmw.ecom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2QbICKpUmai0NepfHAr7QiwDtPC7zYwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
