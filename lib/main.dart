@@ -4,8 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
-import 'utils/theme.dart';
+import 'utils/utils.dart';
 
 class PlatformFirebaseOptions {
   static FirebaseOptions get currentPlatform {
@@ -35,9 +34,10 @@ class PlatformFirebaseOptions {
   }
 }
 
-void main() async{
+void main() async {
   await dotenv.load(fileName: 'dotenv/.env.dev');
   WidgetsFlutterBinding.ensureInitialized();
+  await setupServiceLocator();
   await Firebase.initializeApp(options: PlatformFirebaseOptions.currentPlatform, name: 'bmw-ecom');
   runApp(const MyApp());
 }
@@ -47,12 +47,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'BMW',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      home: const Dashboard(),
-    );
+    return AnimatedBuilder(
+        animation: listenable,
+        builder: (context, snapshot) {
+          return MaterialApp(
+            builder: (context, child) => Stack(
+              fit: StackFit.expand,
+              children: [
+                if (child != null) child,
+
+                /// Overlay elements
+                if (locate<ProgressIndicatorController>().value) const ProgressIndicatorPopup(),
+                ConnectivityIndicator(),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: PopupContainer(
+                    children: locate<PopupController>().value,
+                  ),
+                )
+              ],
+            ),
+            title: 'BMW',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+            home: const SplashScreen(),
+          );
+        });
   }
+
+  Listenable get listenable => Listenable.merge([
+        locate<PopupController>(),
+        locate<ProgressIndicatorController>(),
+      ]);
 }

@@ -1,4 +1,4 @@
-import 'package:e_commerce/screens/screens.dart';
+import 'package:e_commerce/controllers/auth_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,14 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SignInScreen()),
-        );
-      }
-    });
+    AuthController().checkAuthState(context);
   }
 
   @override

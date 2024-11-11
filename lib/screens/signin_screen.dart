@@ -2,6 +2,10 @@ import 'package:e_commerce/components/components.dart';
 import 'package:e_commerce/components/custom_social_login_button.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../controllers/controllers.dart';
+import '../utils/utils.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -13,13 +17,72 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+  final SignInFormController controller = SignInFormController();
 
-  bool _isObscured = true;
-
-  void _toggleObscureText() {
-    setState(() {
-      _isObscured = !_isObscured;
-    });
+  handleSignIn() async {
+    if (await controller.validate()) {
+      try {
+        locate<ProgressIndicatorController>().show();
+        await AuthController().signInWithEmail(email: controller.value.uName!, password: controller.value.pwd!);
+        locate<PopupController>().addItemFor(
+          DismissiblePopup(
+            title: "Logged In",
+            subtitle: "User Logged In Successfully",
+            color: Colors.green,
+            onDismiss: (self) => locate<PopupController>().removeItem(self),
+          ),
+          const Duration(seconds: 5),
+        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          CustomNavigator().goTo(
+            context,
+            const Dashboard(),
+          );
+        });
+      } on UserNotFoundException catch (e) {
+        locate<PopupController>().addItemFor(
+          DismissiblePopup(
+            title: e.message,
+            subtitle: e.message.length <= 20 ? "Please Try again" : '',
+            color: Colors.red,
+            onDismiss: (self) => locate<PopupController>().removeItem(self),
+          ),
+          const Duration(seconds: 5),
+        );
+      } on WrongPasswordException catch (e) {
+        locate<PopupController>().addItemFor(
+          DismissiblePopup(
+            title: e.message,
+            subtitle: e.message.length <= 20 ? "Please Try again" : '',
+            color: Colors.red,
+            onDismiss: (self) => locate<PopupController>().removeItem(self),
+          ),
+          const Duration(seconds: 5),
+        );
+      } on InvalidCredentialException catch (e) {
+        locate<PopupController>().addItemFor(
+          DismissiblePopup(
+            title: e.message,
+            subtitle: e.message.length <= 20 ? "Please Try again" : '',
+            color: Colors.red,
+            onDismiss: (self) => locate<PopupController>().removeItem(self),
+          ),
+          const Duration(seconds: 5),
+        );
+      } catch (err) {
+        locate<PopupController>().addItemFor(
+          DismissiblePopup(
+            title: "Something went wrong",
+            subtitle: "Sorry, something went wrong here",
+            color: Colors.red,
+            onDismiss: (self) => locate<PopupController>().removeItem(self),
+          ),
+          const Duration(seconds: 5),
+        );
+      } finally {
+        locate<ProgressIndicatorController>().hide();
+      }
+    }
   }
 
   @override
@@ -85,21 +148,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    CustomTextField(
-                        labelText: 'Email',
-                        hintText: 'Email',
-                        fontSize: 14,
-                        icon: const Icon(Icons.email),
-                        controller: emailTextEditingController),
-                    CustomTextField(
-                        labelText: 'Password',
-                        hintText: 'Password',
-                        fontSize: 14,
-                        icon: const Icon(Icons.password_outlined),
-                        controller: passwordTextEditingController,
-                        obscureText: _isObscured,
-                        showVisibilityToggle: true,
-                        toggleObscureTextCallback: _toggleObscureText),
+                    SignInForm(controller: controller),
                     Align(
                       alignment: Alignment.centerRight,
                       child: Padding(
@@ -132,7 +181,10 @@ class _SignInScreenState extends State<SignInScreen> {
                               ))),
                     ),
                     CustomGradientButton(
-                        onPressed: () {}, width: MediaQuery.of(context).size.width, height: 45, text: 'Sign In'),
+                        onPressed: () => handleSignIn(),
+                        width: MediaQuery.of(context).size.width,
+                        height: 45,
+                        text: 'Sign In'),
                     CustomSocialSignInButton(
                       onPressed: () {},
                       width: MediaQuery.of(context).size.width,
@@ -203,5 +255,186 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       ),
     );
+  }
+}
+
+class SignInForm extends StatefulFormWidget<SignInFormValue> {
+  const SignInForm({
+    super.key,
+    required SignInFormController super.controller,
+  });
+
+  @override
+  State<SignInForm> createState() => _SignInFormState();
+}
+
+class _SignInFormState extends State<SignInForm> with FormMixin {
+  TextEditingController uNameTextEditingController = TextEditingController();
+  TextEditingController pWDTextEditingController = TextEditingController();
+  bool _isObscure = true;
+
+  late FocusNode _uNameFocusNode;
+  late FocusNode _pwdFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _uNameFocusNode = FocusNode()..addListener(_handleFocusChange);
+    _pwdFocusNode = FocusNode()..addListener(_handleFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _uNameFocusNode.removeListener(_handleFocusChange);
+    _pwdFocusNode.removeListener(_handleFocusChange);
+
+    _uNameFocusNode.dispose();
+    _pwdFocusNode.dispose();
+
+    super.dispose();
+  }
+
+  void _handleFocusChange() {
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Color uNameIconColor = _uNameFocusNode.hasFocus ? const Color(0xFF002366) : Colors.black54;
+    final Color pwdIconColor = _pwdFocusNode.hasFocus ? const Color(0xFF002366) : Colors.black54;
+
+    return ValueListenableBuilder(
+      valueListenable: widget.controller,
+      builder: (context, formValue, _) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  border:
+                      Border.all(color: Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6.0, bottom: 2.0),
+                  child: TextField(
+                    focusNode: _uNameFocusNode,
+                    controller: uNameTextEditingController,
+                    keyboardType: TextInputType.emailAddress,
+                    autocorrect: false,
+                    style: GoogleFonts.lato(color: const Color(0xFF000000)),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      hintText: "Email",
+                      hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                      errorText: formValue.getError("uName"),
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                        color: uNameIconColor,
+                      ),
+                    ),
+                    onChanged: (value) => widget.controller.setValue(
+                      widget.controller.value..uName = value,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[100],
+                  border:
+                      Border.all(color: Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 6.0, bottom: 2.0),
+                  child: TextField(
+                    focusNode: _pwdFocusNode,
+                    controller: pWDTextEditingController,
+                    obscureText: _isObscure,
+                    autocorrect: false,
+                    style: GoogleFonts.lato(
+                      color: const Color(0xFF000000),
+                    ),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      hintText: "Password",
+                      hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                      errorText: formValue.getError("pwd"),
+                      prefixIcon: Icon(Icons.lock_outline_rounded, color: pwdIconColor),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure ? Icons.visibility_off : Icons.visibility,
+                          color: pwdIconColor,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                      ),
+                    ),
+                    onChanged: (value) => widget.controller.setValue(
+                      widget.controller.value..pwd = value,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class SignInFormValue extends FormValue {
+  String? uName;
+  String? pwd;
+
+  SignInFormValue({this.uName, this.pwd});
+}
+
+class SignInFormController extends FormController<SignInFormValue> {
+  SignInFormController() : super(initialValue: SignInFormValue());
+  @override
+  Future<bool> validate() async {
+    value.errors.clear();
+
+    String? uName = value.uName;
+    String? password = value.pwd;
+
+    if (FormValidators.isEmpty(uName)) {
+      value.errors.addAll({"uName": "Email is required"});
+    } else {
+      try {
+        FormValidators.email(uName!);
+      } on ArgumentError catch (err) {
+        value.errors.addAll({"uName": err.message});
+      }
+    }
+
+    if (FormValidators.isEmpty(password)) {
+      value.errors.addAll({"pwd": "Password is required"});
+    } else {
+      try {
+        FormValidators.password(password!);
+      } on ArgumentError catch (err) {
+        value.errors.addAll({"pwd": err.message});
+      }
+    }
+
+    setValue(value);
+    return value.errors.isEmpty;
   }
 }
