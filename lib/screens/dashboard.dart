@@ -1,9 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/screens/product_details_screen.dart';
 import 'package:e_commerce/screens/screens.dart';
+import 'package:e_commerce/utils/navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../components/components.dart';
 import '../models/models.dart';
 
 class Dashboard extends StatefulWidget {
@@ -35,6 +37,18 @@ class _DashboardState extends State<Dashboard> {
         description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
   ];
 
+  handleSignOut(BuildContext context) async {
+    bool? ok = await showConfirmationDialog(
+      context,
+      title: 'SignOut?',
+      content: "Are you sure you want to sign out?",
+    );
+
+    if (ok != null && ok) {
+      await FirebaseAuth.instance.signOut();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,14 +61,17 @@ class _DashboardState extends State<Dashboard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
+                    onPressed: () async {},
                     icon: const Icon(Icons.menu),
                   ),
+                  const Spacer(),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.search_outlined),
+                  ),
+                  IconButton(
+                    onPressed: () => handleSignOut(context),
+                    icon: const Icon(Icons.logout_outlined),
                   ),
                 ],
               ),
