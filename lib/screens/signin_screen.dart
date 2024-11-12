@@ -1,5 +1,4 @@
 import 'package:e_commerce/components/components.dart';
-import 'package:e_commerce/components/custom_social_login_button.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +18,7 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController passwordTextEditingController = TextEditingController();
   final SignInFormController controller = SignInFormController();
 
-  handleSignIn() async {
+  handleSignInEmail() async {
     if (await controller.validate()) {
       try {
         locate<ProgressIndicatorController>().show();
@@ -83,6 +82,40 @@ class _SignInScreenState extends State<SignInScreen> {
         locate<ProgressIndicatorController>().hide();
       }
     }
+  }
+
+  handleSignInWithGoogle() async {
+      try {
+        locate<ProgressIndicatorController>().show();
+        await AuthController().signInWithGoogle();
+        locate<PopupController>().addItemFor(
+          DismissiblePopup(
+            title: "Logged In",
+            subtitle: "User Logged In Successfully",
+            color: Colors.green,
+            onDismiss: (self) => locate<PopupController>().removeItem(self),
+          ),
+          const Duration(seconds: 5),
+        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          CustomNavigator().goTo(
+            context,
+            const Dashboard(),
+          );
+        });
+      } catch (err) {
+        locate<PopupController>().addItemFor(
+          DismissiblePopup(
+            title: "Something went wrong",
+            subtitle: "Sorry, something went wrong here",
+            color: Colors.red,
+            onDismiss: (self) => locate<PopupController>().removeItem(self),
+          ),
+          const Duration(seconds: 5),
+        );
+      } finally {
+        locate<ProgressIndicatorController>().hide();
+      }
   }
 
   @override
@@ -181,12 +214,42 @@ class _SignInScreenState extends State<SignInScreen> {
                               ))),
                     ),
                     CustomGradientButton(
-                        onPressed: () => handleSignIn(),
+                        onPressed: () => handleSignInEmail(),
                         width: MediaQuery.of(context).size.width,
                         height: 45,
                         text: 'Sign In'),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 1,
+                            indent: 20,
+                            endIndent: 10,
+                          ),
+                        ),
+                        Text(
+                          'Or continue with',
+                          style: Theme.of(context).textTheme.titleSmall!.copyWith(color: Colors.black54),
+                        ),
+                        const Expanded(
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 1,
+                            indent: 10,
+                            endIndent: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     CustomSocialSignInButton(
-                      onPressed: () {},
+                      onPressed: () => handleSignInWithGoogle(),
                       width: MediaQuery.of(context).size.width,
                       height: 45,
                       text: 'Sign In with Google',
