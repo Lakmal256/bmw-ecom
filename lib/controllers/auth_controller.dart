@@ -7,6 +7,9 @@ import '../screens/screens.dart';
 import '../utils/utils.dart';
 
 class AuthController {
+
+  // Check User State
+
   void checkAuthState(BuildContext context) {
     Future.delayed(
       const Duration(seconds: 2),
@@ -71,9 +74,13 @@ class AuthController {
     }
   }
 
+  // Send Password Reset Mail
+
   Future<void> sendPasswordResetEmail({required String email}) async {
     await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
   }
+
+  //SignIn With Google
 
   signInWithGoogle() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();

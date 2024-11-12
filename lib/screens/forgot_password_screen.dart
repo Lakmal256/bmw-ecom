@@ -126,7 +126,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                     ForgotPasswordForm(controller: controller),
                     CustomGradientButton(
-                        onPressed: () => handlePasswordResetLinkSend(), width: MediaQuery.of(context).size.width, height: 45, text: 'Password Reset'),
+                        onPressed: () => handlePasswordResetLinkSend(),
+                        width: MediaQuery.of(context).size.width,
+                        height: 45,
+                        text: 'Password Reset'),
                   ],
                 ),
               ),
