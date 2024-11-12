@@ -246,7 +246,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ],
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 15,
                     ),
                     CustomSocialSignInButton(
                       onPressed: () => handleSignInWithGoogle(),
@@ -255,14 +255,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       text: 'Sign In with Google',
                       imagePath: 'assets/google_icon.webp',
                       iconSize: 30,
-                    ),
-                    CustomSocialSignInButton(
-                      onPressed: () {},
-                      width: MediaQuery.of(context).size.width,
-                      height: 45,
-                      text: 'Sign In with Apple',
-                      imagePath: 'assets/apple_icon.png',
-                      iconSize: 22,
                     ),
                     const SizedBox(
                       height: 20,
