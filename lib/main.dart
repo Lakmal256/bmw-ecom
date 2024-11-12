@@ -1,8 +1,11 @@
+import 'package:e_commerce/providers/launcher_provider.dart';
+import 'package:e_commerce/providers/signup_provider.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
 import 'utils/utils.dart';
 
@@ -39,7 +42,19 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
   await Firebase.initializeApp(options: PlatformFirebaseOptions.currentPlatform, name: 'bmw-ecom');
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => SignUpProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LauncherProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

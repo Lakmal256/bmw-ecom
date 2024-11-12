@@ -4,3 +4,6 @@ export 'signup_screen.dart';
 export 'forgot_password_screen.dart';
 export 'dashboard.dart';
 export 'cart_screen.dart';
+export 'favourite_screen.dart';
+export 'profile_screen.dart';
+export 'launcher.dart';

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../components/components.dart';
 import '../models/models.dart';
+import '../providers/providers.dart';
 
 class MyCart extends StatefulWidget {
   const MyCart({super.key});
@@ -34,7 +36,11 @@ class _MyCartState extends State<MyCart> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(),
+        leading: BackButton(
+          onPressed: () {
+            Provider.of<LauncherProvider>(context, listen: false).changeIndex(0);
+          },
+        ),
         title: Text(
           'My Cart',
           style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.bold),

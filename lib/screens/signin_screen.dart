@@ -1,4 +1,5 @@
 import 'package:e_commerce/components/components.dart';
+import 'package:e_commerce/screens/launcher.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,7 +36,7 @@ class _SignInScreenState extends State<SignInScreen> {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           CustomNavigator().goTo(
             context,
-            const Dashboard(),
+            const LauncherScreen(),
           );
         });
       } on UserNotFoundException catch (e) {

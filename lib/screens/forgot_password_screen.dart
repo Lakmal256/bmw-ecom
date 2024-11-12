@@ -129,7 +129,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         onPressed: () => handlePasswordResetLinkSend(),
                         width: MediaQuery.of(context).size.width,
                         height: 45,
-                        text: 'Password Reset'),
+                        text: 'Reset Password'),
                   ],
                 ),
               ),

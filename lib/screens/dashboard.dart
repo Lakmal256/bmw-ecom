@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/screens/product_details_screen.dart';
 import 'package:e_commerce/screens/screens.dart';
-import 'package:e_commerce/utils/navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +15,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  User? user;
+  String? userName;
   List<String> offers = ['assets/bmw_xm.jpg', 'assets/bmw_xm.jpg', 'assets/bmw_xm.jpg'];
 
   List<CarModel> cars = [
@@ -47,6 +48,19 @@ class _DashboardState extends State<Dashboard> {
     if (ok != null && ok) {
       await FirebaseAuth.instance.signOut();
     }
+  }
+
+  @override
+  void initState() {
+    refreshUser();
+    super.initState();
+  }
+
+  Future<void> refreshUser() async {
+    user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      userName = user?.displayName;
+    });
   }
 
   @override
@@ -82,7 +96,7 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     const SizedBox(height: 16.0), // Add space below Row
                     Text(
-                      'Hello Kamal',
+                      userName != null ? 'Hello! $userName' : 'Hello!',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(

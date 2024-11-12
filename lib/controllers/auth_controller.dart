@@ -23,7 +23,7 @@ class AuthController {
               CustomNavigator().goTo(context, const SignInScreen());
               Logger().e('User is currently Sign Out!');
             } else {
-              CustomNavigator().goTo(context, const Dashboard());
+              CustomNavigator().goTo(context, const LauncherScreen());
               Logger().i('User is Sign In : ${user.email}');
             }
           },
@@ -93,6 +93,13 @@ class AuthController {
     );
 
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  // Update User Name
+
+  Future<void> updateUserName({required String userName}) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    await user?.updateDisplayName(userName);
   }
 }
 

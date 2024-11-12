@@ -1,6 +1,7 @@
 import 'package:e_commerce/components/components.dart';
 import 'package:e_commerce/controllers/controllers.dart';
 import 'package:e_commerce/screens/dashboard.dart';
+import 'package:e_commerce/screens/launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -37,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (mounted) {
           CustomNavigator().goTo(
             context,
-            const Dashboard(),
+            const LauncherScreen(),
           );
         }
       } on UserAlreadyExistsException catch (e) {
