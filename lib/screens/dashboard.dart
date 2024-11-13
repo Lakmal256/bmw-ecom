@@ -38,18 +38,6 @@ class _DashboardState extends State<Dashboard> {
         description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
   ];
 
-  handleSignOut(BuildContext context) async {
-    bool? ok = await showConfirmationDialog(
-      context,
-      title: 'SignOut?',
-      content: "Are you sure you want to sign out?",
-    );
-
-    if (ok != null && ok) {
-      await FirebaseAuth.instance.signOut();
-    }
-  }
-
   @override
   void initState() {
     refreshUser();
@@ -78,14 +66,9 @@ class _DashboardState extends State<Dashboard> {
                     onPressed: () async {},
                     icon: const Icon(Icons.menu),
                   ),
-                  const Spacer(),
                   IconButton(
                     onPressed: () {},
                     icon: const Icon(Icons.search_outlined),
-                  ),
-                  IconButton(
-                    onPressed: () => handleSignOut(context),
-                    icon: const Icon(Icons.logout_outlined),
                   ),
                 ],
               ),

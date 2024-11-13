@@ -23,10 +23,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(onPressed: (){
-          Provider.of<LauncherProvider>(context,
-              listen: false)
-              .changeIndex(0);
+        leading: BackButton(onPressed: () {
+          Provider.of<LauncherProvider>(context, listen: false).changeIndex(0);
         }),
         title: Text(
           'Profile',
@@ -137,6 +135,18 @@ class _ProfileFormState extends State<ProfileForm> with FormMixin {
     }
   }
 
+  handleSignOut(BuildContext context) async {
+    bool? ok = await showConfirmationDialog(
+      context,
+      title: 'SignOut?',
+      content: "Are you sure you want to sign out?",
+    );
+
+    if (ok != null && ok) {
+      await FirebaseAuth.instance.signOut();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -202,7 +212,9 @@ class _ProfileFormState extends State<ProfileForm> with FormMixin {
                       border: InputBorder.none,
                       enabledBorder: InputBorder.none,
                       focusedBorder: InputBorder.none,
-                      prefixIcon: Icon(Icons.email_outlined, ),
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                      ),
                     ),
                     onChanged: (value) => widget.controller.setValue(
                       widget.controller.value..email = value,
@@ -222,6 +234,12 @@ class _ProfileFormState extends State<ProfileForm> with FormMixin {
                 width: MediaQuery.of(context).size.width,
                 height: 45,
                 text: 'Reset Password'),
+            const SizedBox(height: 50),
+            CustomGradientButton(
+                onPressed: () => handleSignOut(context),
+                width: MediaQuery.of(context).size.width,
+                height: 45,
+                text: 'Sign Out'),
           ],
         );
       },
