@@ -1,5 +1,3 @@
-import 'package:e_commerce/providers/launcher_provider.dart';
-import 'package:e_commerce/providers/signup_provider.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatf
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/providers.dart';
 import 'utils/utils.dart';
 
 class PlatformFirebaseOptions {
@@ -50,6 +49,12 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => LauncherProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AdminProvider(),
         ),
       ],
       child: const MyApp(),

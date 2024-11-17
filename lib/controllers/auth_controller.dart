@@ -1,45 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 
-import '../screens/screens.dart';
-import '../utils/utils.dart';
-
 class AuthController {
-
-  // Check User State
-
-  void checkAuthState(BuildContext context) {
-    Future.delayed(
-      const Duration(seconds: 2),
-      () {
-        if (!context.mounted) return; // Ensures context is valid
-        FirebaseAuth.instance.authStateChanges().listen(
-          (User? user) {
-            if (!context.mounted) return; // Double-checking context validity
-
-            if (user == null) {
-              CustomNavigator().goTo(context, const SignInScreen());
-              Logger().e('User is currently Sign Out!');
-            } else {
-              CustomNavigator().goTo(context, const LauncherScreen());
-              Logger().i('User is Sign In : ${user.email}');
-            }
-          },
-        );
-      },
-    );
-  }
-
   // Create User Account with Email
 
   Future<void> createUserAccountWithEmail({required String email, required String password}) async {
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      )
+          .then((value) {
+        addUser(value.user!.uid, value.user?.displayName ?? '', email);
+      });
       Logger().i('Account created with : ${credential.user!.email}');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -100,6 +76,21 @@ class AuthController {
   Future<void> updateUserName({required String userName}) async {
     User? user = FirebaseAuth.instance.currentUser;
     await user?.updateDisplayName(userName);
+  }
+
+  // Save User Data
+
+  CollectionReference users = FirebaseFirestore.instance.collection("Users");
+  Future<void> addUser(String uid, String name, String email) {
+    return users.doc(uid).set({
+      "name": name,
+      "uid": uid,
+      "email": email,
+    }).then((value) {
+      Logger().i("User Added");
+    }).catchError((e) {
+      Logger().e(e);
+    });
   }
 }
 

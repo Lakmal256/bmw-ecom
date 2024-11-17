@@ -135,24 +135,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
             ),
             Positioned(
-                top: MediaQuery.of(context).padding.top + 10,
-                left: 10,
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  padding: const EdgeInsets.only(left: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: IconButton(
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                      onPressed: () => Navigator.of(context).pop()),
-                )),
+              top: MediaQuery.of(context).padding.top + 10,
+              left: 10,
+              child: Container(
+                height: 40,
+                width: 40,
+                padding: const EdgeInsets.only(left: 5),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    onPressed: () => Navigator.of(context).pop()),
+              ),
+            ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Image.asset(

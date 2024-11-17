@@ -1,11 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:e_commerce/screens/product_details_screen.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../components/components.dart';
 import '../models/models.dart';
+import '../providers/providers.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -15,8 +15,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  User? user;
-  String? userName;
   List<String> offers = ['assets/bmw_xm.jpg', 'assets/bmw_xm.jpg', 'assets/bmw_xm.jpg'];
 
   List<CarModel> cars = [
@@ -37,19 +35,6 @@ class _DashboardState extends State<Dashboard> {
     CarModel(
         description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
   ];
-
-  @override
-  void initState() {
-    refreshUser();
-    super.initState();
-  }
-
-  Future<void> refreshUser() async {
-    user = FirebaseAuth.instance.currentUser;
-    setState(() {
-      userName = user?.displayName;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +64,9 @@ class _DashboardState extends State<Dashboard> {
                   children: [
                     const SizedBox(height: 16.0), // Add space below Row
                     Text(
-                      userName != null ? 'Hello! $userName' : 'Hello!',
+                      Provider.of<UserProvider>(context, listen: false).userData?.displayName != null
+                          ? 'Hello! ${Provider.of<UserProvider>(context, listen: false).userData!.displayName}'
+                          : 'Hello!',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
