@@ -58,5 +58,11 @@
     		</array>
     	</dict>
     </array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>For Pick Image From Gallery</string>
+    <key>NSCameraUsageDescription</key>
+    <string>For Take Image From Camera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>For Enable Voice Recording</string>
 </dict>
 </plist>

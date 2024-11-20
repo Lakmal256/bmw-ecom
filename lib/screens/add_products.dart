@@ -18,6 +18,7 @@ class _AddProductsState extends State<AddProducts> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(onPressed: () {
+          Provider.of<AdminProvider>(context, listen: false).clearAddProductForm();
           Navigator.of(context).pop();
         }),
         title: Text(
@@ -57,9 +58,6 @@ class _AddProductsState extends State<AddProducts> {
                           Icons.directions_car,
                         ),
                       ),
-                      // onChanged: (value) => widget.controller.setValue(
-                      //   widget.controller.value..userName = value,
-                      // ),
                     ),
                   ),
                 ),
@@ -91,9 +89,6 @@ class _AddProductsState extends State<AddProducts> {
                           Icons.car_rental_outlined,
                         ),
                       ),
-                      // onChanged: (value) => widget.controller.setValue(
-                      //   widget.controller.value..userName = value,
-                      // ),
                     ),
                   ),
                 ),
@@ -125,9 +120,6 @@ class _AddProductsState extends State<AddProducts> {
                           Icons.car_repair_outlined,
                         ),
                       ),
-                      // onChanged: (value) => widget.controller.setValue(
-                      //   widget.controller.value..userName = value,
-                      // ),
                     ),
                   ),
                 ),
@@ -159,32 +151,78 @@ class _AddProductsState extends State<AddProducts> {
                           Icons.attach_money_outlined,
                         ),
                       ),
-                      // onChanged: (value) => widget.controller.setValue(
-                      //   widget.controller.value..userName = value,
-                      // ),
                     ),
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                height: 80,
-                width: 120,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: IconButton(
-                    icon: const Icon(
-                      Icons.add_a_photo_outlined,
-                      color: Colors.white,
-                      size: 40,
+              value.image.path.isEmpty
+                  ? Container(
+                      height: 80,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.add_a_photo_outlined,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        onPressed: () {
+                          value.pickImage();
+                        },
+                      ),
+                    )
+                  : Stack(
+                      children: [
+                        // Display the uploaded image
+                        Container(
+                          height: 160,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(8),
+                            image: DecorationImage(
+                              image: FileImage(value.image),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: GestureDetector(
+                            onTap: () {
+                              value.removeImage();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.red.withOpacity(0.7),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(4.0),
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    onPressed: (){}),
-              ),
               const SizedBox(height: 20),
               CustomGradientButton(
-                  onPressed: () {}, width: MediaQuery.of(context).size.width, height: 45, text: 'Add Product'),
+                  onPressed: () {
+                    value.addProduct();
+                  },
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  text: 'Add Product'),
             ],
           );
         }),

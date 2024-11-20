@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'providers/providers.dart';
 import 'utils/utils.dart';
@@ -41,6 +42,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
   await Firebase.initializeApp(options: PlatformFirebaseOptions.currentPlatform, name: 'bmw-ecom');
+  await Supabase.initialize(
+    url: 'https://nztxohkficempvdxisej.supabase.co',
+    anonKey: dotenv.env['SUPABASE_KEY'] ?? 'SUPABASE_KEY Not found',
+  );
   runApp(
     MultiProvider(
       providers: [
