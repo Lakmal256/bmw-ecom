@@ -69,18 +69,19 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        value.favouriteItems[index].name,
+                                        value.favouriteItems[index].name.length > 22
+                                            ? "${value.favouriteItems[index].name.substring(0, 22)}.."
+                                            : value.favouriteItems[index].name,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .labelLarge!
+                                            .titleSmall!
                                             .copyWith(fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis,
                                       ),
                                       Text(
                                         "\$ ${value.favouriteItems[index].price}",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .labelLarge!
+                                            .titleSmall!
                                             .copyWith(fontWeight: FontWeight.bold),
                                         overflow: TextOverflow.ellipsis,
                                       ),
