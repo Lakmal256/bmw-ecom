@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/models.dart';
@@ -16,6 +17,12 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<String> offers = ['assets/bmw_xm.jpg', 'assets/bmw_xm.jpg', 'assets/bmw_xm.jpg'];
+
+  String formatAmount(String amount) {
+    double numericAmount = double.tryParse(amount) ?? 0.0;
+    NumberFormat formatter = NumberFormat('#,##0.00');
+    return formatter.format(numericAmount);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +192,7 @@ class _DashboardState extends State<Dashboard> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Text(
-                                          '\$ ${cars[index].price} upwards',
+                                          '\$ ${formatAmount(cars[index].price)} upwards',
                                           style: Theme.of(context).textTheme.labelLarge,
                                           overflow: TextOverflow.ellipsis,
                                         ),

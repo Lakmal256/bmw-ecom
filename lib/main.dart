@@ -58,6 +58,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => AdminProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(),
+        ),
       ],
       child: const MyApp(),
     ),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/providers.dart';
@@ -13,6 +14,12 @@ class FavouriteScreen extends StatefulWidget {
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
+  String formatAmount(String amount) {
+    double numericAmount = double.tryParse(amount) ?? 0.0;
+    NumberFormat formatter = NumberFormat('#,##0.00');
+    return formatter.format(numericAmount);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -78,7 +85,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                             .copyWith(fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        "\$ ${value.favouriteItems[index].price}",
+                                        "\$ ${formatAmount(value.favouriteItems[index].price)}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleSmall!
@@ -108,7 +115,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     )
                   : Center(
                       child: Text(
-                        "No favourite items",
+                        "No favourite items!",
                         style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                       ),
                     );
