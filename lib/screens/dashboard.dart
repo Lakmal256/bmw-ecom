@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_commerce/screens/screens.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,25 +16,6 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<String> offers = ['assets/bmw_xm.jpg', 'assets/bmw_xm.jpg', 'assets/bmw_xm.jpg'];
-
-  List<CarModel> cars = [
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-    CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -115,58 +96,111 @@ class _DashboardState extends State<Dashboard> {
               const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, crossAxisSpacing: 4, mainAxisSpacing: 4),
-                    itemCount: cars.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetails(car: cars[index]),
+                child: FutureBuilder(
+                  future: Provider.of<AdminProvider>(context, listen: false).fetchProducts().then(
+                    (value) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Provider.of<UserProvider>(context, listen: false).filterFavouriteItems(value);
+                      });
+                      return value;
+                    },
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.data?.isEmpty == true) {
+                      return Center(
+                        child: Text(
+                          'No available Cars here!',
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      );
+                    } else {
+                      List<CarModel> cars = snapshot.data!;
+                      return GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, crossAxisSpacing: 4, mainAxisSpacing: 4),
+                        itemCount: cars.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetails(car: cars[index]),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Consumer<UserProvider>(
+                                  builder: (context, value, child) {
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: InkWell(
+                                            onTap: () {
+                                              if (value.favItems.contains(cars[index].id)) {
+                                                value.removeFromFavourite(context, cars[index]);
+                                              } else {
+                                                value.addToFavourite(context, cars[index]);
+                                              }
+                                            },
+                                            child: Icon(
+                                              Icons.favorite,
+                                              color: value.favItems.contains(cars[index].id)
+                                                  ? Colors.red.shade600
+                                                  : Colors.grey.shade600,
+                                            ),
+                                          ),
+                                        ),
+                                        CachedNetworkImage(
+                                          imageUrl: cars[index].image,
+                                          placeholder: (context, url) =>
+                                              const Center(child: CircularProgressIndicator()),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: 80,
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          cars[index].name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge!
+                                              .copyWith(fontWeight: FontWeight.bold),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text(
+                                          '\$ ${cars[index].price} upwards',
+                                          style: Theme.of(context).textTheme.labelLarge,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           );
                         },
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Align(
-                                    alignment: Alignment.topRight,
-                                    child: Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.grey.shade600,
-                                    )),
-                                Image.asset(cars[index].image),
-                                const SizedBox(height: 10),
-                                Text(
-                                  cars[index].name,
-                                  style: Theme.of(context).textTheme.labelLarge!.copyWith(fontWeight: FontWeight.bold),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Text(
-                                  '\$ ${cars[index].price}',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                       );
-                    }),
+                    }
+                  },
+                ),
               ),
             ],
           ),

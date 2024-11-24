@@ -2,8 +2,12 @@ import 'dart:io';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce/controllers/storage_controller.dart';
+import 'package:e_commerce/models/models.dart';
+import 'package:e_commerce/providers/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import '../screens/screens.dart';
 import '../utils/utils.dart';
 
 class AdminProvider extends ChangeNotifier {
@@ -27,7 +31,7 @@ class AdminProvider extends ChangeNotifier {
     return '${name}_$randomNumber';
   }
 
-  Future<void> addProduct() async {
+  Future<void> addProduct(context) async {
     if (_nameController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
         _typeController.text.isEmpty ||
@@ -47,7 +51,7 @@ class AdminProvider extends ChangeNotifier {
       String imageUrl =
           await StorageController().uploadImage(_image, 'Uploads', generateRandomNumber(_nameController.text));
       if (imageUrl != '') {
-        DocumentReference productDoc = await product.add({
+        await product.add({
           'name': _nameController.text,
           'description': _descriptionController.text,
           'type': _typeController.text,
@@ -65,6 +69,10 @@ class AdminProvider extends ChangeNotifier {
               onDismiss: (self) => locate<PopupController>().removeItem(self),
             ),
             const Duration(seconds: 5),
+          );
+          CustomNavigator().goTo(
+            context,
+            const Dashboard(),
           );
           return value;
         });
@@ -105,5 +113,15 @@ class AdminProvider extends ChangeNotifier {
   void removeImage() {
     _image = File('');
     notifyListeners();
+  }
+
+  Future<List<CarModel>> fetchProducts() async {
+    QuerySnapshot snapshot = await product.get();
+    List<CarModel> cars = [];
+    for (var e in snapshot.docs) {
+      CarModel car = CarModel.fromJson(e.data() as Map<String, dynamic>);
+      cars.add(car);
+    }
+    return cars;
   }
 }

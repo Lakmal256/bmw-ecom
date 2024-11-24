@@ -15,7 +15,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
     const Dashboard(),
     const FavouriteScreen(),
     const MyCart(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   @override

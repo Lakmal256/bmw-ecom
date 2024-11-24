@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/models/car_model.dart';
 import 'package:flutter/material.dart';
 
@@ -18,14 +19,21 @@ class _ProductDetailsState extends State<ProductDetails> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Main content scrollable area
             SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 18.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const BackButton(),
-                  Image.asset(widget.car.image),
+                  CachedNetworkImage(
+                    imageUrl: widget.car.image,
+                    placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 180,
+                  ),
                   Text(
                     widget.car.name,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),

@@ -50,9 +50,6 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => SignUpProvider(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => LauncherProvider(),
         ),
         ChangeNotifierProvider(

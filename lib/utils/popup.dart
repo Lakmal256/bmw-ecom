@@ -44,12 +44,12 @@ class PopupContainer extends StatelessWidget {
 
 class DismissiblePopup extends StatelessWidget {
   const DismissiblePopup({
-    Key? key,
+    super.key,
     required this.onDismiss,
     required this.color,
     required this.title,
     required this.subtitle,
-  }) : super(key: key);
+  });
 
   final Function(Widget) onDismiss;
   final Color color;
@@ -88,9 +88,9 @@ class DismissiblePopup extends StatelessWidget {
 
 class AlertCard extends StatelessWidget {
   const AlertCard({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Widget child;
 

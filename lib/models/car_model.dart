@@ -1,9 +1,9 @@
 class CarModel {
   String description;
-  int id;
+  String id;
   String image;
   String name;
-  double price;
+  String price;
   String type;
 
   CarModel({
@@ -14,4 +14,14 @@ class CarModel {
     required this.price,
     required this.type,
   });
+
+  factory CarModel.fromJson(Map<String, dynamic> value) {
+    return CarModel(
+        description: value['description'],
+        id: value['id'],
+        image: value['image'],
+        name: value['name'],
+        price: value["price"],
+        type: value['type']);
+  }
 }

@@ -219,7 +219,7 @@ class _AddProductsState extends State<AddProducts> {
                 const SizedBox(height: 20),
                 CustomGradientButton(
                     onPressed: () {
-                      value.addProduct();
+                      value.addProduct(context);
                     },
                     width: MediaQuery.of(context).size.width,
                     height: 45,

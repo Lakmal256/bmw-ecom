@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 
+import '../models/models.dart';
+
 class AuthController {
   // Create User Account with Email
 
@@ -71,16 +73,18 @@ class AuthController {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  CollectionReference users = FirebaseFirestore.instance.collection("Users");
+
   // Update User Name
 
   Future<void> updateUserName({required String userName}) async {
     User? user = FirebaseAuth.instance.currentUser;
     await user?.updateDisplayName(userName);
+    users.doc(user!.uid).update({"name": userName});
   }
 
   // Save User Data
 
-  CollectionReference users = FirebaseFirestore.instance.collection("Users");
   Future<void> addUser(String uid, String name, String email) {
     return users.doc(uid).set({
       "name": name,
@@ -91,6 +95,16 @@ class AuthController {
     }).catchError((e) {
       Logger().e(e);
     });
+  }
+
+  //fetch user data
+  Future<UserModel?> getUserData(String uid) async {
+    try {
+      DocumentSnapshot userData = await users.doc(uid).get();
+      return UserModel.fromMap(userData.data() as Map<String, dynamic>);
+    } catch (e) {
+      return null;
+    }
   }
 }
 

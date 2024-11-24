@@ -25,7 +25,7 @@ abstract class FormController<T> extends ValueNotifier<T> {
 }
 
 abstract class StatefulFormWidget<T> extends StatefulWidget {
-  const StatefulFormWidget({Key? key, required this.controller}) : super(key: key);
+  const StatefulFormWidget({super.key, required this.controller});
 
   final FormController<T> controller;
 }

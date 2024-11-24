@@ -9,7 +9,7 @@ class StorageController {
     try {
       final supabase = Supabase.instance.client;
       final bytes = await file.readAsBytes();
-      final response = await supabase.storage.from(bucketName).uploadBinary(
+      await supabase.storage.from(bucketName).uploadBinary(
             path,
             bytes,
           );

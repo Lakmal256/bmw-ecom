@@ -114,7 +114,7 @@ class _ProfileFormState extends State<ProfileForm> with FormMixin {
           const Duration(seconds: 5),
         );
         if (mounted) {
-          Provider.of<UserProvider>(context, listen: false).updateUserModel(context);
+          Provider.of<UserProvider>(context, listen: false).updateUserModel(context, user!.uid);
         }
       } catch (err) {
         locate<PopupController>().addItemFor(

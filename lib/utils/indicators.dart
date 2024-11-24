@@ -31,7 +31,7 @@ class ProgressIndicatorPopup extends StatelessWidget {
 }
 
 class ConnectivityIndicator extends StatelessWidget {
-  ConnectivityIndicator({Key? key}) : super(key: key);
+  ConnectivityIndicator({super.key});
 
   final Connectivity _connectivity = Connectivity();
 

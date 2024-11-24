@@ -15,21 +15,21 @@ class MyCart extends StatefulWidget {
 class _MyCartState extends State<MyCart> {
   List<CarModel> cars = [
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
     CarModel(
-        description: 'description', id: 100, image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: 99999, type: 'Hyper'),
+        description: 'description', id: '100', image: 'assets/bmw_xm.jpg', name: 'BMW XM', price: '99999', type: 'Hyper'),
   ];
 
   @override
