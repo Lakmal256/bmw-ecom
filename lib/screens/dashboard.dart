@@ -205,12 +205,12 @@ class _DashboardState extends State<Dashboard> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .labelLarge!
-                                              .copyWith(fontWeight: FontWeight.bold),
+                                              .copyWith(fontWeight: FontWeight.bold,color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Text(
                                           '\$ ${formatAmount(cars[index].price)} upwards',
-                                          style: Theme.of(context).textTheme.labelLarge,
+                                          style: Theme.of(context).textTheme.labelLarge!.copyWith(color: Colors.black),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],

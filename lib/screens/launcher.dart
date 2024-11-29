@@ -61,6 +61,7 @@ class _LauncherScreenState extends State<LauncherScreen> {
               ),
             ],
           ),
+          backgroundColor: Theme.of(context).brightness == Brightness.light ? Colors.white : Colors.grey.shade400,
         ),
       );
     });
@@ -86,7 +87,11 @@ class BottomNBIcon extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: isActive ? const Color(0xFF002366).withOpacity(0.8) : Colors.grey.shade500,
+                color: isActive
+                    ? const Color(0xFF002366).withOpacity(0.8)
+                    : Theme.of(context).brightness == Brightness.light
+                        ? Colors.grey.shade500
+                        : const Color(0xFF002366).withOpacity(0.5),
               ),
               Text(
                 text,

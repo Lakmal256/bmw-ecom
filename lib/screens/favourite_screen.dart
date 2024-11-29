@@ -82,14 +82,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleSmall!
-                                            .copyWith(fontWeight: FontWeight.bold),
+                                            .copyWith(fontWeight: FontWeight.bold,color: Colors.black),
                                       ),
                                       Text(
                                         "\$ ${formatAmount(value.favouriteItems[index].price)}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleSmall!
-                                            .copyWith(fontWeight: FontWeight.bold),
+                                            .copyWith(fontWeight: FontWeight.bold,color: Colors.black),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],

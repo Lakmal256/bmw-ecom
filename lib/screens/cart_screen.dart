@@ -75,14 +75,14 @@ class _MyCartState extends State<MyCart> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall!
-                                              .copyWith(fontWeight: FontWeight.bold),
+                                              .copyWith(fontWeight: FontWeight.bold,color: Colors.black),
                                         ),
                                         Text(
                                           "\$ ${formatAmount(value.cartItems[index].car.price)}",
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall!
-                                              .copyWith(fontWeight: FontWeight.bold),
+                                              .copyWith(fontWeight: FontWeight.bold,color: Colors.black),
                                         ),
                                         const Spacer(),
                                         Text(
@@ -90,7 +90,7 @@ class _MyCartState extends State<MyCart> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleSmall!
-                                              .copyWith(fontWeight: FontWeight.bold),
+                                              .copyWith(fontWeight: FontWeight.bold,color: Colors.black),
                                         ),
                                       ],
                                     ),
@@ -174,7 +174,6 @@ class _MyCartState extends State<MyCart> {
                     ),
                     Container(
                       decoration: const BoxDecoration(
-                        color: Colors.white,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
