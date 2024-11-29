@@ -174,109 +174,119 @@ class _ProfileFormState extends State<ProfileForm> with FormMixin {
     return ValueListenableBuilder(
       valueListenable: widget.controller,
       builder: (context, formValue, _) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  border:
-                      Border.all(color: Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 6.0, bottom: 2.0),
-                  child: TextField(
-                    controller: userNameTextEditingController,
-                    keyboardType: TextInputType.emailAddress,
-                    autocorrect: false,
-                    style: GoogleFonts.lato(color: const Color(0xFF000000)),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      hintText: "Add User Name",
-                      hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
-                      errorText: formValue.getError("uName"),
-                      prefixIcon: const Icon(
-                        Icons.person_2_outlined,
-                      ),
-                    ),
-                    onChanged: (value) => widget.controller.setValue(
-                      widget.controller.value..userName = value,
-                    ),
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    border:
+                        Border.all(color: Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  border:
-                      Border.all(color: Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 6.0, bottom: 2.0),
-                  child: TextField(
-                    controller: emailTextEditingController,
-                    maxLines: 1,
-                    scrollPhysics: const AlwaysScrollableScrollPhysics(),
-                    autocorrect: false,
-                    keyboardType: TextInputType.emailAddress,
-                    readOnly: true,
-                    style: GoogleFonts.lato(color: const Color(0xFF000000)),
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      prefixIcon: Icon(
-                        Icons.email_outlined,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 6.0, bottom: 2.0),
+                    child: TextField(
+                      controller: userNameTextEditingController,
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      style: GoogleFonts.lato(color: const Color(0xFF000000)),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        hintText: "Add User Name",
+                        hintStyle: Theme.of(context).inputDecorationTheme.labelStyle,
+                        errorText: formValue.getError("uName"),
+                        prefixIcon: const Icon(
+                          Icons.person_2_outlined,
+                        ),
+                      ),
+                      onChanged: (value) => widget.controller.setValue(
+                        widget.controller.value..userName = value,
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            CustomGradientButton(
-                onPressed: () => handleUserNameUpdate(),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                text: 'Update User Name'),
-            CustomGradientButton(
-                onPressed: () => handlePasswordResetLinkSend(),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                text: 'Reset Password'),
-            const Divider(
-              color: Colors.grey,
-              thickness: 1,
-              indent: 20,
-              endIndent: 20,
-            ),
-            CustomGradientButton(
-                onPressed: () => CustomNavigator().goTo(
-                      context,
-                      const AddProducts(),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 6.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    border:
+                        Border.all(color: Theme.of(context).brightness == Brightness.light ? Colors.grey : Colors.white),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 6.0, bottom: 2.0),
+                    child: TextField(
+                      controller: emailTextEditingController,
+                      maxLines: 1,
+                      scrollPhysics: const AlwaysScrollableScrollPhysics(),
+                      autocorrect: false,
+                      keyboardType: TextInputType.emailAddress,
+                      readOnly: true,
+                      style: GoogleFonts.lato(color: const Color(0xFF000000)),
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.email_outlined,
+                        ),
+                      ),
                     ),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                text: 'Add Product'),
-            CustomGradientButton(
-                onPressed: () => CustomNavigator().goTo(
-                  context,
-                  const MyOrders(),
+                  ),
                 ),
-                width: MediaQuery.of(context).size.width,
-                height: 45,
-                text: 'My Orders'),
-          ],
+              ),
+              const SizedBox(height: 20),
+              CustomGradientButton(
+                  onPressed: () => CustomNavigator().goTo(
+                    context,
+                    const MyOrders(),
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  text: 'My Orders'),
+              CustomGradientButton(
+                  onPressed: () => handleUserNameUpdate(),
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  text: 'Update User Name'),
+              CustomGradientButton(
+                  onPressed: () => handlePasswordResetLinkSend(),
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  text: 'Reset Password'),
+              const Divider(
+                color: Colors.grey,
+                thickness: 1,
+                indent: 20,
+                endIndent: 20,
+              ),
+              CustomGradientButton(
+                  onPressed: () => CustomNavigator().goTo(
+                        context,
+                        const AddProducts(),
+                      ),
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  text: 'Add Product'),
+              CustomGradientButton(
+                  onPressed: () => CustomNavigator().goTo(
+                    context,
+                    const UpdateSlider(),
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  text: 'Update Home Slider'),
+            ],
+          ),
         );
       },
     );

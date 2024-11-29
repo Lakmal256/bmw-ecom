@@ -68,10 +68,6 @@ class AdminProvider extends ChangeNotifier {
             ),
             const Duration(seconds: 5),
           );
-          CustomNavigator().goTo(
-            context,
-            const Dashboard(),
-          );
           return value;
         });
         clearAddProductForm();
@@ -89,12 +85,12 @@ class AdminProvider extends ChangeNotifier {
     } else {
       locate<PopupController>().addItemFor(
         DismissiblePopup(
-          title: "Something Went Wrong",
-          subtitle: "Image not added",
+          title: "Image Not Picked",
+          subtitle: "Please Add a Image",
           color: Colors.red,
           onDismiss: (self) => locate<PopupController>().removeItem(self),
         ),
-        const Duration(seconds: 5),
+        const Duration(seconds: 3),
       );
     }
   }

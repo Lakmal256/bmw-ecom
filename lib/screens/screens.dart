@@ -10,3 +10,4 @@ export 'launcher.dart';
 export 'product_details_screen.dart';
 export 'add_products.dart';
 export 'order_screen.dart';
+export 'update_slider_screen.dart';

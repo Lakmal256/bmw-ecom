@@ -16,8 +16,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<String> offers = ['assets/bmw_xm.jpg', 'assets/bmw_xm.jpg', 'assets/bmw_xm.jpg'];
-
   String formatAmount(String amount) {
     double numericAmount = double.tryParse(amount) ?? 0.0;
     NumberFormat formatter = NumberFormat('#,##0.00');
@@ -26,25 +24,18 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    // Assuming sliderImages comes from the HomeSliderProvider
+    List<String> sliderImages = Provider.of<HomeSliderProvider>(context).sliderImages;
+
+    // Filtered list containing only valid URLs
+    List<String> filteredImages = sliderImages.where((image) => image.contains('https://')).toList();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () async {},
-                    icon: const Icon(Icons.menu),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.search_outlined),
-                  ),
-                ],
-              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: Column(
@@ -69,36 +60,62 @@ class _DashboardState extends State<Dashboard> {
               ),
               CarouselSlider(
                 options: CarouselOptions(height: 150.0, autoPlay: true),
-                items: offers.map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MyCart(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.symmetric(horizontal: 3.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(15),
-                            child: Image.asset(
-                              i.toString(),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                items: filteredImages.isNotEmpty
+                    ? filteredImages.map((image) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const MyCart(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: CachedNetworkImage(
+                                    imageUrl: image,
+                                    placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    fit: BoxFit.fitWidth,
+                                    height: 100,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }).toList()
+                    : [
+                        // If no valid URLs, use a fallback image inside the carousel
+                        Builder(
+                          builder: (BuildContext context) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width,
+                              margin: const EdgeInsets.symmetric(horizontal: 3.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.asset(
+                                  'assets/BMW-Logo.png',
+                                  fit: BoxFit.fitWidth,
+                                  height: 100,
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  );
-                }).toList(),
+                      ],
               ),
               const SizedBox(height: 15),
               Padding(

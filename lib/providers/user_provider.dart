@@ -3,12 +3,15 @@ import 'package:e_commerce/models/models.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import '../controllers/controllers.dart';
 import '../screens/screens.dart';
 import '../utils/utils.dart';
+import 'providers.dart';
 
 class UserProvider extends ChangeNotifier {
   UserModel? _user;
+  final HomeSliderController sliderController = HomeSliderController();
   List<String> _favItems = [];
   List<CarModel> _favouriteItems = [];
 
@@ -49,9 +52,8 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> fetchData(uid, context) async {
     _user = await AuthController().getUserData(uid);
-    // List<String> list = await HomeSliderController().getSliderImages();
-    // Logger().e(list);
-    // Provider.of<HomeSliderProvider>(context ,listen: false).updateSliderImageList(list);
+    List<String> list = await HomeSliderController().getSliderImages();
+    Provider.of<HomeSliderProvider>(context ,listen: false).updateSliderImageList(list);
     _favItems = _user?.favourite ?? [];
     notifyListeners();
   }

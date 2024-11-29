@@ -68,6 +68,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) => PaymentProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => HomeSliderProvider(),
+        ),
       ],
       child: const MyApp(),
     ),
