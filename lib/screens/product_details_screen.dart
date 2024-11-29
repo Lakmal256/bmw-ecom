@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce/models/car_model.dart';
 import 'package:e_commerce/providers/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../components/components.dart';
@@ -15,6 +16,13 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+
+  String formatAmount(String amount) {
+    double numericAmount = double.tryParse(amount) ?? 0.0;
+    NumberFormat formatter = NumberFormat('#,##0.00');
+    return formatter.format(numericAmount);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +49,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '\$ ${widget.car.price}',
+                      '\$ ${formatAmount(widget.car.price)}',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import '../controllers/controllers.dart';
 import '../models/models.dart';
 import '../utils/utils.dart';
+import 'providers.dart';
 
 class CartProvider extends ChangeNotifier {
   // OrderController oController = OrderController();
@@ -9,6 +13,8 @@ class CartProvider extends ChangeNotifier {
   List<CartModel> _cartItems = [];
   List<CartModel> get cartItems => _cartItems;
   double _total = 0;
+  DateTime purchaseTime = DateTime.now();
+  late String formattedDate;
 
   void increaseQuantity() {
     _quantity++; //_quantity = _quantity + 1;
@@ -29,7 +35,7 @@ class CartProvider extends ChangeNotifier {
         DismissiblePopup(
           title: "Product removed from Cart",
           subtitle: "Product removed from Cart successfully",
-          color: Colors.green,
+          color: Colors.orange,
           onDismiss: (self) => locate<PopupController>().removeItem(self),
         ),
         const Duration(seconds: 3),
@@ -88,16 +94,18 @@ class CartProvider extends ChangeNotifier {
     return total;
   }
 
-  // Future<void> saveOrderDetails(BuildContext context) async {
-  //   UserModel user =
-  //   Provider.of<UserProvider>(context, listen: false).userData!;
-  //
-  //   OrderModel oModel = OrderModel(
-  //     totalAmount: _total,
-  //     id: "",
-  //     items: _cartItems,
-  //     user: user,
-  //   );
-  //   oController.saveOrder(oModel, context);
-  // }
+  Future<void> saveOrderDetails(BuildContext context) async {
+    UserModel user =
+    Provider.of<UserProvider>(context, listen: false).userData!;
+    formattedDate = DateFormat('dd-MM-yyyy HH:mm').format(purchaseTime);
+
+    OrderModel orderModel = OrderModel(
+      totalAmount: _total,
+      orderId: "",
+      items: _cartItems,
+      user: user,
+      purchaseTime: formattedDate,
+    );
+    OrderController().saveOrder(orderModel, context);
+  }
 }

@@ -97,7 +97,7 @@ class UserProvider extends ChangeNotifier {
         DismissiblePopup(
           title: "Product removed from Favourite",
           subtitle: "Product removed from Favourite successfully",
-          color: Colors.green,
+          color: Colors.orange,
           onDismiss: (self) => locate<PopupController>().removeItem(self),
         ),
         const Duration(seconds: 5),
@@ -115,5 +115,11 @@ class UserProvider extends ChangeNotifier {
     }
     _favouriteItems = filteredList;
     notifyListeners();
+  }
+
+  Future<List<OrderModel>> getMyOrders() async {
+    List<OrderModel> orders = await OrderController().fetchMyOrders(_user!.uid);
+
+    return orders;
   }
 }

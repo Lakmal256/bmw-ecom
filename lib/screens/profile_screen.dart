@@ -1,6 +1,5 @@
 import 'package:e_commerce/controllers/controllers.dart';
 import 'package:e_commerce/providers/providers.dart';
-import 'package:e_commerce/screens/add_products.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../components/components.dart';
 import '../models/models.dart';
 import '../utils/utils.dart';
+import 'screens.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -268,6 +268,14 @@ class _ProfileFormState extends State<ProfileForm> with FormMixin {
                 width: MediaQuery.of(context).size.width,
                 height: 45,
                 text: 'Add Product'),
+            CustomGradientButton(
+                onPressed: () => CustomNavigator().goTo(
+                  context,
+                  const MyOrders(),
+                ),
+                width: MediaQuery.of(context).size.width,
+                height: 45,
+                text: 'My Orders'),
           ],
         );
       },

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/services/stripe_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class _MyCartState extends State<MyCart> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                            value.cartItems[index].car.name.length > 16
+                                          value.cartItems[index].car.name.length > 16
                                               ? "${value.cartItems[index].car.name.substring(0, 16)}.."
                                               : value.cartItems[index].car.name,
                                           style: Theme.of(context)
@@ -200,7 +201,10 @@ class _MyCartState extends State<MyCart> {
                               ],
                             ),
                             CustomGradientButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Provider.of<PaymentProvider>(context, listen: false)
+                                      .getPayment(value.calculateTotal().toInt().toString(), context);
+                                },
                                 width: MediaQuery.of(context).size.width,
                                 height: 45,
                                 text: 'Buy Now'),

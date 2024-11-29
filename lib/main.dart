@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show TargetPlatform, defaultTargetPlatform;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -46,6 +47,9 @@ void main() async {
     url: 'https://nztxohkficempvdxisej.supabase.co',
     anonKey: dotenv.env['SUPABASE_KEY'] ?? 'SUPABASE_KEY Not found',
   );
+
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? 'STRIPE_PUBLISHABLE_KEY Not found';
+
   runApp(
     MultiProvider(
       providers: [
@@ -60,6 +64,9 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => CartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => PaymentProvider(),
         ),
       ],
       child: const MyApp(),
